@@ -36,7 +36,8 @@ const render = require("./lib/htmlRenderer");
         type: "input",
         message: "What is your Manager's office number?",
         name: "managerNo",
-        validate: answerValidation
+        validate: idValidation
+
       }
     
     ]).then(function(answers){
@@ -71,16 +72,16 @@ const render = require("./lib/htmlRenderer");
             Engineerfn();
             break;
            
-           case `Intern`:
+          case `Intern`:
+          
+            Internfn();
+            break;
+          
+          default:
             
-             Internfn();
-             break;
+            Defaultfn();
+            break;
             
-           default:
-              
-              Defaultfn();
-              break;
-              
           }
         })
         .catch(function(err) {
@@ -88,6 +89,75 @@ const render = require("./lib/htmlRenderer");
       });
     }
  
+    function Engineerfn(){
+      inquirer.prompt([
+        {
+           type: "input",
+           message: "What is your Engineer's Name?",
+           name: "engineerName",
+           validate: answerValidation
+        },
+        {
+            type: "input",
+            message: "What is your Engineer's Id?",
+            name: "engineerId",
+            validate: idValidation
+         },
+         {
+            type: "input",
+            message: "What is your Engineer's Email?",
+            name: "engineerEmail",
+            validate: emailValidation
+         },
+         {
+            type: "input",
+            message: "What is your Engineer's Github Username?",
+            name: "engineerUsername",
+            validate: gitHubValidation
+         },
+      
+        ]).then(function(answers){
+          const engineer = new Engineer(answers.engineerName ,answers.engineerId, answers.engineerEmail, engineerNo )
+       
+         }) .catch(function(err) {
+       console.log(err);
+     });
+    }
+
+    function Internfn(){
+      inquirer.prompt([
+        {
+           type: "input",
+           message: "What is your Intern's Name?",
+           name: "internName",
+           validate: answerValidation
+        },
+        {
+            type: "input",
+            message: "What is your Intern's Id?",
+            name: "internId",
+            validate: idValidation
+         },
+         {
+            type: "input",
+            message: "What is your Intern's Email?",
+            name: "internEmail",
+            validate: emailValidation
+         },
+         {
+            type: "input",
+            message: "What is your Intern's School?",
+            name: "internSchool",
+            validate: answerValidation
+         },
+        
+        ]).then(function(answers){
+          const intern = new Intern(answers.internName ,answers.internId, answers.internEmail, internNo )
+       
+         }) .catch(function(err) {
+           console.log(err);
+     });
+    }
     // To validate whether questions are answered. If not, return 'Please enter the detail' message
     function answerValidation(value){
         if(value!="") return true;
