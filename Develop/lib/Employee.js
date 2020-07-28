@@ -1,25 +1,28 @@
 // TODO: Write code to define and export the Employee class
-const Employee =  function(name, id, email){
+class Employee{
+constructor(name, id, email){
 this.name =name;
 this.id= id;
 this.email = email;
 }
 
-Employee.prototype.getName = function(){
-return this.name;
-}
+getName() {
+    return this.name
+};
 
-Employee.prototype.getId = function(){
+
+getId(){
     return this.id;
     }
 
     
-Employee.prototype.getEmail = function(){
+getEmail(){
     return this.email;
     }
 
         
-Employee.prototype.getRole = () =>`Employee`;
+getRole() { return `Employee`;}
     
+}
 
 module.exports = Employee;
