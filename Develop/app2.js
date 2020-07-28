@@ -10,9 +10,10 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
-function init() {
-  
-    inquirer.prompt([
+ function init() {
+  // try{
+  //   const { data } = await
+    return inquirer.prompt([
       {
         type: "input",
         name: "managerName",
@@ -36,85 +37,103 @@ function init() {
         message: "What is your Manager's office number?",
         name: "managerNo",
         validate: answerValidation
-      },
-      {
+      }
+    ])}
+      
+    inquirer.prompt(teamType)
+        {
+       
         type: "input",
         message: "Which type of team you would like to add?",
         name: "typeInfo",
-    
+       validate : questions
       }
-    ])
-    .then(function (response){
-          
-      switch(response.typeInfo){
-         case 'Engineer':
 
-             quesEngineer =   inquirer.prompt([
-             {
-                type: "input",
-                message: "What is your Engineer's Name?",
-                name: "engineerName",
-             },
-             {
-                 type: "input",
-                 message: "What is your Engineer's Id?",
-                 name: "engineerId",
-              },
-              {
-                 type: "input",
-                 message: "What is your Engineer's Email?",
-                 name: "engineerEmail",
-              },
-              {
-                 type: "input",
-                 message: "What is your Engineer's Github Username?",
-                 name: "engineerUsername",
-              },
-           
-             ])
-         break;
+  .then((response) => {
+     console.log(response);
+     var i=0;
+     if(i < 3){
+        return prompt()
+
+        i++;
+     }
   
-          
-         case 'Intern':
-             quesIntern  = 
-               inquirer.prompt([
-             {
-                type: "input",
-                message: "What is your Intern's Name?",
-                name: "internName",
-             },
-             {
-                 type: "input",
-                 message: "What is your Intern's Id?",
-                 name: "internId",
-              },
-              {
-                 type: "input",
-                 message: "What is your Intern's Email?",
-                 name: "internEmail",
-              },
-              {
-                 type: "input",
-                 message: "What is your Intern's School?",
-                 name: "internSchool",
-              },
-             
-             ])
-             break;
+  })
+  .catch(function(err) {
+    console.log(err);
+  });
 
-         }
-         if(response.typeInfo === 'Engineer'){
-             return true;
-         }else if(response.typeInfo === 'Intern'){
-             return true;
-         }
-    })
+       
+       
+     async function questions(value){
+    
+        let quesEngineer;
+        let quesIntern;
+
+           switch(value){
+            case 'Engineer':
+
+               await inquirer.prompt([
+                {
+                   type: "input",
+                   message: "What is your Engineer's Name?",
+                   name: "engineerName",
+                },
+                {
+                    type: "input",
+                    message: "What is your Engineer's Id?",
+                    name: "engineerId",
+                 },
+                 {
+                    type: "input",
+                    message: "What is your Engineer's Email?",
+                    name: "engineerEmail",
+                 },
+                 {
+                    type: "input",
+                    message: "What is your Engineer's Github Username?",
+                    name: "engineerUsername",
+                 },
+              
+                ])
+            break;
      
-    .then((answers) => {
-       console.log(answers);
+             
+            case 'Intern':
+               await inquirer.prompt([
+                {
+                   type: "input",
+                   message: "What is your Intern's Name?",
+                   name: "internName",
+                },
+                {
+                    type: "input",
+                    message: "What is your Intern's Id?",
+                    name: "internId",
+                 },
+                 {
+                    type: "input",
+                    message: "What is your Intern's Email?",
+                    name: "internEmail",
+                 },
+                 {
+                    type: "input",
+                    message: "What is your Intern's School?",
+                    name: "internSchool",
+                 },
+                
+                ])
+                break;
 
-    })
-}
+            }
+            if(value === 'Engineer'){
+                return true;
+            }else if(value === 'Intern'){
+                return true;
+            }
+    
+        }
+
 
     // To validate whether questions are answered. If not, return 'Please enter the detail' message
     function answerValidation(value){
@@ -145,4 +164,3 @@ function init() {
 // object with the correct structure and methods. This structure will be crucial in order
 // for the provided `render` function to work! ```
 
-init();
