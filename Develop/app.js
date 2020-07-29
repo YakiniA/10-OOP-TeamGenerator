@@ -2,17 +2,20 @@ const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
 const inquirer = require("inquirer");
+const axios = require("axios");
 const path = require("path");
 const fs = require("fs");
 
-const OUTPUT_DIR = path.resolve(__dirname, "output");
-const outputPath = path.join(OUTPUT_DIR, "team.html");
+const OUTPUT_DIR = path.resolve(__dirname, "team.html");
+// const OUTPUT_DIR = path.resolve(__dirname, "output");
+// const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
-
-function init() {
-  
-    inquirer.prompt([
+var count = 0;
+const arr = [];
+ function Managerfn() {
+ console.log("Let's Build your team");
+   inquirer.prompt([
       {
         type: "input",
         name: "managerName",
@@ -23,98 +26,172 @@ function init() {
         type: "input",
         message: "What is your Manager Id?",
         name: "managerId",
-        validate: answerValidation
+        validate: idValidation
       },
       {
         type: "input",
         message: "What is your Manager's email?",
         name: "managerEmail",
-        validate: answerValidation
+        validate: emailValidation
       },
       {
         type: "input",
         message: "What is your Manager's office number?",
         name: "managerNo",
-        validate: answerValidation
-      },
-      {
-        type: "input",
-        message: "Which type of team you would like to add?",
-        name: "typeInfo",
-    
+        validate: idValidation
+
       }
-    ])
-    .then(function (response){
-          
-      switch(response.typeInfo){
-         case 'Engineer':
+    
+    ]).then(function(answers){
+   
+         const manager = new Manager(answers.managerName ,answers.managerId, answers.managerEmail, answers.managerNo )
+         arr.push(manager);
+         Teamfn();
 
-             quesEngineer =   inquirer.prompt([
-             {
-                type: "input",
-                message: "What is your Engineer's Name?",
-                name: "engineerName",
-             },
-             {
-                 type: "input",
-                 message: "What is your Engineer's Id?",
-                 name: "engineerId",
-              },
-              {
-                 type: "input",
-                 message: "What is your Engineer's Email?",
-                 name: "engineerEmail",
-              },
-              {
-                 type: "input",
-                 message: "What is your Engineer's Github Username?",
-                 name: "engineerUsername",
-              },
-           
-             ])
-         break;
-  
-          
-         case 'Intern':
-             quesIntern  = 
-               inquirer.prompt([
-             {
-                type: "input",
-                message: "What is your Intern's Name?",
-                name: "internName",
-             },
-             {
-                 type: "input",
-                 message: "What is your Intern's Id?",
-                 name: "internId",
-              },
-              {
-                 type: "input",
-                 message: "What is your Intern's Email?",
-                 name: "internEmail",
-              },
-              {
-                 type: "input",
-                 message: "What is your Intern's School?",
-                 name: "internSchool",
-              },
-             
-             ])
-             break;
+        }) .catch(function(err) {
+      console.log(err);
+    });
+  }
 
-         }
-         if(response.typeInfo === 'Engineer'){
-             return true;
-         }else if(response.typeInfo === 'Intern'){
-             return true;
-         }
-    })
+ 
+
+  function Teamfn() {
+   if(arr.length >=4){
+     return  Defaultfn();
+   }
+      inquirer.prompt([
+      {
+        type: "list",
+        message: "Which type of team you would like to add?",
+        name: "choice",
+        choices: [
+          "Engineer",
+          "Intern",
+          "No more team members"
+        ]
+      }
+      
+      ]).then(teamChoice => {
      
-    .then((answers) => {
-       console.log(answers);
+     
+        switch(teamChoice.choice){
+          case `Engineer`:
+            Engineerfn();
+           
+            break;
+           
+          case `Intern`:
+          
+            Internfn();
+           
+            break;
 
-    })
-}
+          case `No more team members`:
+            console.log( `Thank you for building your team`);
+            Defaultfn();
+            break;
+
+          }
+        
+        })
+        .catch(function(err) {
+        console.log(err);
+      });
+    }
+ 
+    function Engineerfn(){
+      inquirer.prompt([
+        {
+           type: "input",
+           message: "What is your Engineer's Name?",
+           name: "engineerName",
+           validate: answerValidation
+        },
+        {
+            type: "input",
+            message: "What is your Engineer's Id?",
+            name: "engineerId",
+            validate: idValidation
+         },
+         {
+            type: "input",
+            message: "What is your Engineer's Email?",
+            name: "engineerEmail",
+            validate: emailValidation
+         },
+         {
+            type: "input",
+            message: "What is your Engineer's Github Username?",
+            name: "engineerGithub",
+            validate: gitHubValidation
+         },
+      
+        ]).then(function(answers){
+          const engineer = new Engineer(answers.engineerName ,answers.engineerId, answers.engineerEmail, answers.engineerGithub )
+          arr.push(engineer);
+          Teamfn();
+
+         }) .catch(function(err) {
+       console.log(err);
+     });
+    }
+
+    function Internfn(){
+      inquirer.prompt([
+        {
+           type: "input",
+           message: "What is your Intern's Name?",
+           name: "internName",
+           validate: answerValidation
+        },
+        {
+            type: "input",
+            message: "What is your Intern's Id?",
+            name: "internId",
+            validate: idValidation
+         },
+         {
+            type: "input",
+            message: "What is your Intern's Email?",
+            name: "internEmail",
+            validate: emailValidation
+         },
+         {
+            type: "input",
+            message: "What is your Intern's School?",
+            name: "internSchool",
+            validate: answerValidation
+         },
+        
+        ]).then(function(answers){
+          const intern = new Intern(answers.internName ,answers.internId, answers.internEmail, answers.internSchool )
+
+          arr.push(intern);
+          Teamfn() 
+         }) .catch(function(err) {
+           console.log(err);
+     });
+    }
+
+
+    function Defaultfn(){
+      console.log(typeof render(arr));
+     console.log(render(arr));
+     console.log(__dirname);
+     console.log(OUTPUT_DIR);
+    
+      fs.writeFileSync(OUTPUT_DIR,  render(arr), function(err) {
+
+        if (err) {
+          return console.log(err);
+        }
+      
+        console.log("Success!");
+      
+      });
+      
+    }
+
 
     // To validate whether questions are answered. If not, return 'Please enter the detail' message
     function answerValidation(value){
@@ -122,13 +199,50 @@ function init() {
         else return `Please enter the detail`;
       }
       
+    // To validate whether id is entered. If not, return 'Please enter the detail' message
+    function idValidation(value){
+      const id = /^[1-9]\d*$/;
+     
+      if (value.match(id)) {
+        return true;
+      }
+      return "Please enter valid number.";
+    }
+    
+    //To validate whether the email entered is correct. If not, return 'Please enter valid email' message
+    function emailValidation(value){
+
+      var mailformat = /\S+@\S+\.\S+/;
+      if(value.match(mailformat))
+       return true;
+     
+      else
+      return `Please enter valid email`;
+    }
+
+    //To validate the GitHub account. If not valid, return 'Invalid user message'
+   async function gitHubValidation(value){
+ 
+      const queryUrl = `https://api.github.com/users/${value}`;
+      try{
+       const response = await axios.get(queryUrl);
+        if(response.status === 200){
+          return true;
+        }
+      }catch (error) {
+        return `Invalid User`;
+        
+      };
+      }
+    
+      Managerfn();
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
 // generate and return a block of HTML including templated divs for each employee!
-
+//
 // After you have your html, you're now ready to create an HTML file using the HTML
 // returned from the `render` function. Now write it to a file named `team.html` in the
 // `output` folder. You can use the variable `outputPath` above target this location.
@@ -145,4 +259,3 @@ function init() {
 // object with the correct structure and methods. This structure will be crucial in order
 // for the provided `render` function to work! ```
 
-init();
