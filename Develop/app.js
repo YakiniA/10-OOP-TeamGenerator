@@ -56,6 +56,7 @@ const arr = [];
 
   function Teamfn() {
    if(arr.length >=4){
+    console.log(`Thank you for building your team`);
      return  Defaultfn();
    }
       inquirer.prompt([
@@ -85,8 +86,8 @@ const arr = [];
            
             break;
 
-          case `No more team members`:
-            console.log( `Thank you for building your team`);
+         default:
+            console.log(`Thank you for building your team`);
             Defaultfn();
             break;
 
@@ -190,8 +191,8 @@ const arr = [];
 
     // To validate whether questions are answered. If not, return 'Please enter the detail' message
     function answerValidation(value){
-        if(value!="") return true;
-        else return `Please enter the detail`;
+        if(value!="" && value.match('[a-zA-Z][a-zA-Z]+$'))return true;
+        else return `Please enter valid detail`;
       }
       
     // To validate whether id is entered. If not, return 'Please enter the detail' message
