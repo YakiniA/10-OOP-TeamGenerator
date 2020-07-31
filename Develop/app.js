@@ -12,6 +12,7 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 const render = require("./lib/htmlRenderer");
 var count = 0;
 const arr = [];
+const idArr = [];
  function Managerfn() {
  console.log("Let's Build your team");
    inquirer.prompt([
@@ -37,7 +38,7 @@ const arr = [];
         type: "input",
         message: "What is your Manager's office number?",
         name: "managerNo",
-        validate: idValidation
+        validate: phNoValidation
 
       }
     
@@ -45,6 +46,7 @@ const arr = [];
    
          const manager = new Manager(answers.managerName ,answers.managerId, answers.managerEmail, answers.managerNo )
          arr.push(manager);
+         idArr.push(answers.managerId);
          Teamfn();
 
         }) .catch(function(err) {
@@ -129,6 +131,7 @@ const arr = [];
         ]).then(function(answers){
           const engineer = new Engineer(answers.engineerName ,answers.engineerId, answers.engineerEmail, answers.engineerGithub )
           arr.push(engineer);
+          idArr.push(answers.engineerId);
           Teamfn();
 
          }) .catch(function(err) {
@@ -167,6 +170,7 @@ const arr = [];
           const intern = new Intern(answers.internName ,answers.internId, answers.internEmail, answers.internSchool )
 
           arr.push(intern);
+          idArr.push(answers.internId);
           Teamfn() 
          }) .catch(function(err) {
            console.log(err);
@@ -195,16 +199,32 @@ const arr = [];
         else return `Please enter valid detail`;
       }
       
-    // To validate whether id is entered. If not, return 'Please enter the detail' message
+    // To validate whether id is entered and already in use. 
+    //If not entered 'Please enter valid number' message,
+    //If already used 'Please select different ID..Already in Use!!' message shown
     function idValidation(value){
+      const pass = value.match(/^[1-9]\d*$/);
+    //  console.log(pass);
+      if (pass) {
+      
+          if(idArr.includes(value)){
+            return "Please select different ID..Already in Use!!";
+          }else{ 
+            return true;
+          };
+    }else return "Please enter valid number.";
+  }
+    
+     // To validate whether phNo is correct . If not, return 'Please enter valid office number' message
+     function phNoValidation(value){
       const id = /^[1-9]\d*$/;
      
       if (value.match(id)) {
         return true;
       }
-      return "Please enter valid number.";
+      return "Please enter valid office number.";
     }
-    
+
     //To validate whether the email entered is correct. If not, return 'Please enter valid email' message
     function emailValidation(value){
 
