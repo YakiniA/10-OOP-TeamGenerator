@@ -50,7 +50,7 @@ node index.js
 
 ### Preview
 
-![RecordedVideo](video file/TeamGenerator.gif)
+![RecordedVideo](files/TeamGenerator.gif)
 
 ### Submission Links
 
