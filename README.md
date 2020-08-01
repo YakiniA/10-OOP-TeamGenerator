@@ -30,10 +30,11 @@ The application will be invoked with the following command:
 node index.js
 ```
 
-### Implementation
+To run the test, use the following command:
 
-
-
+```
+npm test
+```
 
 ### Node.js Built-in Package
 
@@ -51,6 +52,9 @@ node index.js
 ### Preview
 
 ![RecordedVideo](files/TeamGenerator.gif)
+![Run program](files/run.jpg)
+![Jest Tests](files/testResults.jpg)
+![Output file](files/team.jpg)
 
 ### Submission Links
 
