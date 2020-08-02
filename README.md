@@ -27,7 +27,7 @@ npm install
 The application will be invoked with the following command:
 
 ```
-node index.js
+node app.js
 ```
 
 To run the test, use the following command:
