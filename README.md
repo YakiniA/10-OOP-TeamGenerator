@@ -60,6 +60,8 @@ npm test
 
 Link To the GitHub Repo : https://github.com/YakiniA/10-OOP-TeamGenerator
 
+Link To the generated team.html file: [HTML File](output/team.html)
+
 Link To The Demo Video : https://drive.google.com/file/d/1SZoYuFZToXFrYFs9i5rRVorCQDX7woig/view?usp=sharing
 
 ##### References
